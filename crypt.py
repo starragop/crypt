@@ -1,3 +1,4 @@
+# Python 2
 import base64
 x = "It is not possible either to trick or escape the mind of Zeus"
 key = "Neo"
