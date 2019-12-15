@@ -20,8 +20,8 @@ def decode(key,string):
   return "".join(decoded_string)
 
 def getUserInput(prompt):
-  UserResponse = input(prompt)
-  return UserResponse
+  UserResponse = raw_input(prompt)
+  return str(UserResponse)
 
 def ChooseMode(): # Should this method use cases instead of if?
   chosen = getUserInput("Encrypt or Decrypt? (E/D/C)\n>")
@@ -34,4 +34,4 @@ def ChooseMode(): # Should this method use cases instead of if?
   else:
     return ChooseMode()
 
-print(ChooseMode)
+print(ChooseMode())
