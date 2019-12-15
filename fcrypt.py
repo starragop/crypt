@@ -52,19 +52,25 @@ def GetKey():
 
 def ChooseFile():
   chosenfile = getUserInput("What file would you like to select?\n>")
-  return chosenfile
+  if os.path.exists(chosenfile):
+    return chosenfile
+  else:
+    print("File not found, please try again")
+    return ChooseFile()
 
-def ChooseDeposit(path):
+def ChooseDeposit():
   chosenpath = getUserInput("Where would you like to deposit the encrypted files?\n>")
   if os.path.isdir(chosenpath):
+    filename = getUserInput("What would you like to name the file?\n>")
+    chosenpath = chosenpath + filename
     return chosenpath
-  else
+  else:
     print("Invalid path, please try again")
-    return ChooseDeposit(path)
+    return ChooseDeposit()
 
-def GetFile(path):
+def GetFile(path): # Unused
   try:
-    with open(path) as file:
+    with open(path, "r") as file:
       return file
   except IOError:
     return False
@@ -75,13 +81,28 @@ def Initiate():
   key = GetKey()
   if mode is True: # Encrypt
     if type is True: # File type chosen
-      
+      file = open(ChooseFile(), "r")
+      deposit = ChooseDeposit()
+      filecontents = file.read()
+      encryptedfile = encode(key, filecontents)
+      depositedfile = open(deposit, "w+")
+      depositedfile.write(encryptedfile)
+      print("Done! Saved to " + deposit)
     else:
-      
+      print("Folder encryption/decryption not supported at the moment, only individual files.")
+      exit(0)
   else: # Decrypt
-    if type is True:
-      
+    if type is True: # File type chosen
+      file = open(ChooseFile(), "r")
+      deposit = ChooseDeposit()
+      filecontents = file.read()
+      decryptedfile = decode(key, filecontents)
+      depositedfile = open(deposit, "w+")
+      depositedfile.write(decryptedfile)
+      print("Done! Saved to " + deposit)
     else:
+      print("Folder encryption/decryption not supported at the moment, only individual files.")
+      exit(0)
 
 if __name__ == "__main__":
   Initiate()
