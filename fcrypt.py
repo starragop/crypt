@@ -1,5 +1,6 @@
 # Python 2
 import base64
+import os
 
 def encode(key, string):
     encoded_chars = []# Encoded array/list
@@ -34,4 +35,53 @@ def ChooseMode(): # Should this method use cases instead of if?
   else:
     return ChooseMode()
 
-print(ChooseMode())
+def ChooseType():
+  type = getUserInput("File or Folder? (Fi/Fo/C)\n>")
+  if type == "Fi":
+    return True
+  elif type == "Fo":
+    return False
+  elif type == "C":
+    exit(0)
+  else:
+    return ChooseType()
+
+def GetKey():
+  gkey = getUserInput("What is the key?\n>")
+  return gkey
+
+def ChooseFile():
+  chosenfile = getUserInput("What file would you like to select?\n>")
+  return chosenfile
+
+def ChooseDeposit(path):
+  chosenpath = getUserInput("Where would you like to deposit the encrypted files?\n>")
+  if os.path.isdir(chosenpath):
+    return chosenpath
+  else
+    print("Invalid path, please try again")
+    return ChooseDeposit(path)
+
+def GetFile(path):
+  try:
+    with open(path) as file:
+      return file
+  except IOError:
+    return False
+
+def Initiate():
+  mode = ChooseMode()
+  type = ChooseType()
+  key = GetKey()
+  if mode is True: # Encrypt
+    if type is True: # File type chosen
+      
+    else:
+      
+  else: # Decrypt
+    if type is True:
+      
+    else:
+
+if __name__ == "__main__":
+  Initiate()
