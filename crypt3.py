@@ -10,7 +10,7 @@ def encode(key, string):
         encoded_c = chr(ord(string[i]) + ord(key_c) % 256) # Turn the letter into its unicode, add it by the unicode of the key, if it's over 256, substract 256 then turn it into a character again.
         encoded_chars.append(encoded_c) # Add the encoded character into the encoded array/list
     encoded_string = "".join(encoded_chars) # Turn the array/list into a string.
-    return base64.urlsafe_b64encode(encoded_string) # Return the encrypted string
+    return base64.urlsafe_b64encode(bytes(encoded_string, 'utf-8'))# Return the encrypted string
 
 def decode(key,string):
   decode = base64.urlsafe_b64decode(string)
