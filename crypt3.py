@@ -17,6 +17,7 @@ def decode(key,string):
   decoded_string=[]
   for i in range(len(decode)):
     key_c = key[i % len(key)]
+    print(type(decode[i],type(key_c))
     decoded_c = chr(decode[i] - key_c)
     decoded_string.append(decoded_c)
   return "".join(decoded_string)
