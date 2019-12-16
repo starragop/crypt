@@ -1,6 +1,7 @@
 # Python 2
 import base64
 import os
+import json
 
 def encode(key, string):
     encoded_chars = []# Encoded array/list
@@ -50,13 +51,13 @@ def GetKey():
   gkey = getUserInput("What is the key?\n>")
   return gkey
 
-def ChooseFile():
+def ChooseFile(IsDir):
   chosenfile = getUserInput("What file would you like to select?\n>")
   if os.path.exists(chosenfile):
     return chosenfile
   else:
     print("File not found, please try again")
-    return ChooseFile()
+    return ChooseFile(IsDir)
 
 def ChooseDeposit():
   chosenpath = getUserInput("Where would you like to deposit the encrypted files?\n>")
@@ -81,7 +82,7 @@ def Initiate():
   key = GetKey()
   if mode is True: # Encrypt
     if type is True: # File type chosen
-      file = open(ChooseFile(), "r")
+      file = open(ChooseFile(False), "r")
       deposit = ChooseDeposit()
       filecontents = file.read()
       encryptedfile = encode(key, filecontents)
@@ -89,13 +90,30 @@ def Initiate():
       depositedfile.write(encryptedfile)
       print("Done! Saved to " + deposit)
     else:
-      dir = ChooseFile()
+      dir = ChooseFile(True)
       deposit = ChooseDeposit()
-      print("Folder encryption/decryption not supported at the moment, only individual files.")
+      contents = os.listdir(dir)
+      indexed = {}
+      def ScanDir(Dir):
+        scan = os.listdir(Dir)
+        print("Scanning " + Dir)
+        for i in xrange(len(scan)):
+          print("Scanning... " + scan[i])
+          if os.path.isdir(Dir + contents[i]):
+            indexed[contents[i]] = {"type":"Dir","path":Dir + contents[i],"content":ScanDir(Dir + contents[i] + "/")}
+          else:
+            indexed[contents[i]] = {"type":"File","path":Dir + contents[i],"content":open(Dir + contents[i],"r").read()}
+      ScanDir(dir)
+      deposited = open(deposit,"w+")
+      jsondump = json.dumps(indexed)
+      print("INDEXED: " + str(indexed))
+      print("JSON DUMP: " + jsondump)
+      deposited.write(encode(key,jsondump))
+      print("Done! Saved to " + deposit)
       exit(0)
   else: # Decrypt
     if type is True: # File type chosen
-      file = open(ChooseFile(), "r")
+      file = open(ChooseFile(False), "r")
       deposit = ChooseDeposit()
       filecontents = file.read()
       decryptedfile = decode(key, filecontents)
