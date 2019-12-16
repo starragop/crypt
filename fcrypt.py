@@ -89,6 +89,8 @@ def Initiate():
       depositedfile.write(encryptedfile)
       print("Done! Saved to " + deposit)
     else:
+      dir = ChooseFile()
+      deposit = ChooseDeposit()
       print("Folder encryption/decryption not supported at the moment, only individual files.")
       exit(0)
   else: # Decrypt
@@ -102,6 +104,7 @@ def Initiate():
       print("Done! Saved to " + deposit)
     else:
       print("Folder encryption/decryption not supported at the moment, only individual files.")
+      
       exit(0)
 
 if __name__ == "__main__":
