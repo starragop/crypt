@@ -5,32 +5,13 @@ import sys
 if sys.version_info < (3,0):
   print("Sorry, this program file is only for Python 3!")
   exit()
-import base64
 import os
 import json
+from encoding import *
 try:
   from termcolor import colored
 except ImportError as err:
   print("Had issues importing termcolor:",err)
-
-def encode(key, string):
-    encoded_chars = []# Encoded array/list
-    for i in range(len(string)):
-        key_c = key[i % len(key)]
-        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
-        encoded_chars.append(encoded_c)
-    encoded_string = "".join(encoded_chars)
-    return str(base64.urlsafe_b64encode(bytes(encoded_string,"utf-8")))
-
-def decode(key,string):
-  decode = str(base64.urlsafe_b64decode(string))
-  decoded_string=[]
-  for i in range(len(decode)):
-    key_c = key[i % len(key)]
-    print(ord(decode[i]) - ord(key_c),decode[i],key_c,ord(decode[i]),ord(key_c))
-    decoded_c = chr(ord(decode[i]) - ord(key_c))
-    decoded_string.append(decoded_c)
-  return "".join(decoded_string)
 
 def getUserInput(prompt):
   UserResponse = input(prompt)
